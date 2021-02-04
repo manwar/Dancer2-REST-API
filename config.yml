@@ -1,0 +1,17 @@
+# Your application's name
+appname: "BookStore"
+
+layout: "main"
+charset: "UTF-8"
+template: "template_toolkit"
+
+engines:
+   template:
+     template_toolkit:
+       start_tag: '<%'
+       end_tag:   '%>'
+
+plugins:
+   DBIC:
+     bookstore:
+       dsn: "dbi:SQLite:dbname=bookstore.db"

@@ -1,0 +1,80 @@
+Programming Exercise
+--------------------
+
+INSTALL:
+
+    $ sudo cpanm -v Dancer2::Plugin::DBIC
+    $ sudo cpanm -v Dancer2::Plugin::Serialize
+    $ sudo apt install sqlite3 (Only if required)
+    $ sqlite3 bookstore.db < bookstore.sql
+    $ SCHEMA_LOADER_BACKCOMPAT=1 perl populate_database.pl
+
+TESTING:
+
+    $ perl Makefile.PL
+    $ make
+    $ make test
+
+RUN:
+
+    - sudo plackup bin/app.psgi
+
+ROUTES:
+
+- List authors
+
+    $ curl -X GET http://localhost:5000/api/authors
+
+- List all books of the given author
+
+    $ curl -X GET http://localhost:5000/api/authors/1/books
+
+- Fetch author details
+
+    $ curl -X GET http://localhost:5000/api/authors/1
+
+- Add new author
+
+    $ curl -X POST http://localhost:5000/api/authors
+      -d '{ "first_name":"X", "last_name":"Y", "country":"Z" }'
+
+- Update author details
+
+    $ curl -X PUT http://localhost:5000/api/authors/4
+      -d '{ "first_name":"X1", "last_name":"Y1", "country":"Z1" }'
+
+- Patch author details
+
+    $ curl -X PATCH http://localhost:5000/api/authors/4
+      -d '{ "first_name":"X2" }'
+
+- Delete author
+
+    $ curl -X DELETE http://localhost:5000/api/authors/4
+
+- List books
+
+    $ curl -X GET http://localhost:5000/api/books
+
+- Fetch book details
+
+    $ curl -X GET http://localhost:5000/api/books/1
+
+- Add new book
+
+    $ curl -X POST http://localhost:5000/api/books
+      -d '{ "author":"3", "title":"T", "isbn":"ISBN", "pub_date":"2010-07-01" }'
+
+- Update book details
+
+    $ curl -X PUT http://localhost:5000/api/books/7
+      -d '{ "author":"3", "title":"T1", "isbn":"ISBN-1", "pub_date":"2010-07-01" }'
+
+- Patch book details
+
+    $ curl -X PATCH http://localhost:5000/api/books/7
+      -d '{ "title":"T2" }'
+
+- Delete book
+
+    $ curl -X DELETE http://localhost:5000/api/books/7
