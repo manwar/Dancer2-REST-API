@@ -4,8 +4,8 @@ Programming Exercise
 INSTALL:
 
     $ sudo cpanm -v Dancer2::Plugin::DBIC
-    $ sudo cpanm -v Dancer2::Plugin::Serialize
-    $ sudo apt install sqlite3 (Only if required)
+    $ sudo cpanm -v Dancer2::Serializer::JSON
+    $ sudo apt install sqlite3
     $ sqlite3 bookstore.db < bookstore.sql
     $ SCHEMA_LOADER_BACKCOMPAT=1 perl populate_database.pl
 
