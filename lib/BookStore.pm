@@ -98,6 +98,11 @@ post '/api/authors' => sub {
 del '/api/authors/:id' => sub {
     my $id = route_parameters->get('id');
 
+    my $books = _author_books($id);
+    foreach my $book (@$books) {
+        $schema->delete_object('Book', $book->{id});
+    }
+
     $schema->delete_object('Author', $id);
 
     return _authors();
@@ -123,6 +128,11 @@ put '/api/books/:id' => sub {
     my $isbn     = body_parameters->get('isbn');
 
     my ($book) = $schema->search_object('Book', { id => $id });
+    return unless defined $book;
+
+    # check if it is valid author
+    return unless defined _author($author);
+
     $book->author($author);
     $book->title($title);
     $book->pub_date($pub_date);
@@ -140,11 +150,18 @@ patch '/api/books/:id' => sub {
     my $isbn     = body_parameters->get('isbn');
 
     my ($book) = $schema->search_object('Book', { id => $id });
-    $book->author($author)     if defined $author;
-    $book->title($title)       if defined $title;
-    $book->pub_date($pub_date) if defined $pub_date;
-    $book->isbn($isbn)         if defined $isbn;
-    $book->update;
+    return unless defined $book;
+
+    # check if it is valid author
+    if (defined $author && defined _author($author)) {
+        $book->author($author);
+    }
+    else {
+        $book->title($title)       if defined $title;
+        $book->pub_date($pub_date) if defined $pub_date;
+        $book->isbn($isbn)         if defined $isbn;
+        $book->update;
+    }
 
     return _book($id);
 };
@@ -154,6 +171,9 @@ post '/api/books' => sub {
     my $title    = body_parameters->get('title');
     my $pub_date = body_parameters->get('pub_date');
     my $isbn     = body_parameters->get('isbn');
+
+    # check if it is valid author
+    return unless defined _author($author);
 
     my $response = Schema::Book->new({
         author   => $author,
@@ -228,6 +248,7 @@ sub _author {
     my ($id) = @_;
 
     my ($author) = $schema->search_object('Author', { id => $id });
+    return unless defined $author;
 
     return {
         id         => $id,
