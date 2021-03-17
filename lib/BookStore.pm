@@ -13,7 +13,7 @@ use Dancer2::Serializer::JSON;
 
 =head1 NAME
 
-Programming Exercise - BookStore
+BookStore - Dancer2 REST API.
 
 =head1 VERSION
 
@@ -58,6 +58,8 @@ put '/api/authors/:id' => sub {
     my $country    = body_parameters->get('country');
 
     my ($author) = $schema->search_object('Author', { id => $id });
+    return unless defined $author;
+
     $author->first_name($first_name);
     $author->last_name($last_name);
     $author->country($country);
@@ -73,6 +75,8 @@ patch '/api/authors/:id' => sub {
     my $country    = body_parameters->get('country');
 
     my ($author) = $schema->search_object('Author', { id => $id });
+    return unless defined $author;
+
     $author->first_name($first_name) if defined $first_name;
     $author->last_name($last_name)   if defined $last_name;
     $author->country($country)       if defined $country;
@@ -98,6 +102,10 @@ post '/api/authors' => sub {
 del '/api/authors/:id' => sub {
     my $id = route_parameters->get('id');
 
+    # check if it is valid author
+    return unless defined _author($id);
+
+    # get rid of author books first
     my $books = _author_books($id);
     foreach my $book (@$books) {
         $schema->delete_object('Book', $book->{id});
