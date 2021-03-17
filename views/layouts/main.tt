@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-type" content="text/html; charset=<% settings.charset %>" />
-<title>Programming Exercise - BookStore</title>
+<title>Dancer2 REST API</title>
 <link rel="stylesheet" href="<% request.uri_base %>/css/style.css" />
 <link rel="shortcut icon" href="/favicon.ico" />
 
@@ -15,7 +15,7 @@
 </head>
 <body>
 <div align="center">
-<h1>Programming Exercise - BookStore</h1>
+<h1>Dancer2 REST API</h1>
 <br/>
 <hr/>
 </div>
